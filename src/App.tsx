@@ -7,6 +7,7 @@ import Architecture from './components/Architecture';
 import DataModel from './components/DataModel';
 import NarrativeDynamics from './components/NarrativeDynamics';
 import HowItWorks from './components/HowItWorks';
+import LiveIngestion from './components/LiveIngestion';
 import { 
   LayoutDashboard, 
   Activity, 
@@ -16,15 +17,17 @@ import {
   Database, 
   Waves,
   Zap,
+  Rss,
   Menu,
   X
 } from 'lucide-react';
 
-type View = 'dashboard' | 'how' | 'coherence' | 'sir' | 'homeostasis' | 'architecture' | 'data' | 'narrative';
+type View = 'dashboard' | 'how' | 'coherence' | 'narrative' | 'homeostasis' | 'sir' | 'live' | 'architecture' | 'data';
 
 const navItems: { id: View; label: string; icon: React.ReactNode }[] = [
   { id: 'dashboard', label: 'Overview', icon: <LayoutDashboard size={18} /> },
   { id: 'how', label: 'How It Works', icon: <Zap size={18} /> },
+  { id: 'live', label: 'Live Ingestion', icon: <Rss size={18} /> },
   { id: 'coherence', label: 'Coherence Engine', icon: <Activity size={18} /> },
   { id: 'narrative', label: 'Narrative Dynamics', icon: <Waves size={18} /> },
   { id: 'homeostasis', label: 'Homeostasis', icon: <Shield size={18} /> },
@@ -41,12 +44,13 @@ export default function App() {
     switch (view) {
       case 'dashboard': return <Dashboard onNavigate={setView} />;
       case 'how': return <HowItWorks />;
+      case 'live': return <LiveIngestion />;
       case 'coherence': return <CoherenceEngine />;
-      case 'sir': return <SIRSimulator />;
+      case 'narrative': return <NarrativeDynamics />;
       case 'homeostasis': return <HomeostasisAnalyzer />;
+      case 'sir': return <SIRSimulator />;
       case 'architecture': return <Architecture />;
       case 'data': return <DataModel />;
-      case 'narrative': return <NarrativeDynamics />;
       default: return <Dashboard onNavigate={setView} />;
     }
   };

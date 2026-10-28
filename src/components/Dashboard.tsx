@@ -1,6 +1,6 @@
-import { Activity, Shield, GitBranch, Waves, TrendingUp, AlertTriangle, CheckCircle, Info, X, Zap } from 'lucide-react';
+import { Activity, Shield, GitBranch, Waves, TrendingUp, AlertTriangle, CheckCircle, Info, X, Zap, Rss } from 'lucide-react';
 
-type View = 'dashboard' | 'how' | 'coherence' | 'sir' | 'homeostasis' | 'architecture' | 'data' | 'narrative';
+type View = 'dashboard' | 'how' | 'live' | 'coherence' | 'narrative' | 'homeostasis' | 'sir' | 'architecture' | 'data';
 
 interface DashboardProps {
   onNavigate: (view: View) => void;
@@ -115,18 +115,20 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
       {/* System Components */}
       <div className="rounded-xl bg-gray-900 border border-gray-800 p-6">
         <h3 className="text-sm font-semibold text-white mb-4">System Components</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           {[
-            { title: 'Coherence Engine', desc: 'κ(t) computation', view: 'coherence', color: 'emerald' },
-            { title: 'Narrative Dynamics', desc: 'Temporal patterns', view: 'narrative', color: 'cyan' },
-            { title: 'Homeostasis Analyzer', desc: 'Classification', view: 'homeostasis', color: 'purple' },
-            { title: 'SIR Simulator', desc: 'Propagation model', view: 'sir', color: 'amber' },
+            { title: 'Live Ingestion', desc: 'Controlled pipeline', view: 'live', icon: <Rss size={14} className="text-amber-400" /> },
+            { title: 'Coherence Engine', desc: 'κ(t) computation', view: 'coherence', icon: <Activity size={14} className="text-emerald-400" /> },
+            { title: 'Narrative Dynamics', desc: 'Temporal patterns', view: 'narrative', icon: <Waves size={14} className="text-cyan-400" /> },
+            { title: 'Homeostasis Analyzer', desc: 'Classification', view: 'homeostasis', icon: <Shield size={14} className="text-purple-400" /> },
+            { title: 'SIR Simulator', desc: 'Propagation model', view: 'sir', icon: <GitBranch size={14} className="text-amber-400" /> },
           ].map(item => (
             <button
               key={item.view}
               onClick={() => onNavigate(item.view as View)}
               className="text-left rounded-lg bg-gray-800/50 border border-gray-700/50 p-4 hover:border-gray-600 transition-all group"
             >
+              <div className="mb-2">{item.icon}</div>
               <h4 className="text-xs font-medium text-white group-hover:text-emerald-400 transition-colors">
                 {item.title}
               </h4>
