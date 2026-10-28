@@ -1,6 +1,6 @@
-import { Activity, Shield, GitBranch, Waves, TrendingUp, AlertTriangle, CheckCircle, Info, X } from 'lucide-react';
+import { Activity, Shield, GitBranch, Waves, TrendingUp, AlertTriangle, CheckCircle, Info, X, Zap } from 'lucide-react';
 
-type View = 'dashboard' | 'coherence' | 'sir' | 'homeostasis' | 'architecture' | 'data' | 'narrative';
+type View = 'dashboard' | 'how' | 'coherence' | 'sir' | 'homeostasis' | 'architecture' | 'data' | 'narrative';
 
 interface DashboardProps {
   onNavigate: (view: View) => void;
@@ -91,6 +91,25 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
             </p>
           </div>
         </div>
+      </div>
+
+      {/* How It Works CTA */}
+      <div className="rounded-xl bg-gradient-to-r from-amber-500/5 to-emerald-500/5 border border-amber-500/20 p-5 flex items-center justify-between">
+        <div>
+          <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+            <Zap size={16} className="text-amber-400" />
+            New to the System?
+          </h3>
+          <p className="text-xs text-gray-400 mt-1">
+            Walk through the full analytical pipeline step by step — from data ingestion to homeostasis classification.
+          </p>
+        </div>
+        <button
+          onClick={() => onNavigate('how')}
+          className="shrink-0 px-4 py-2 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-medium hover:bg-amber-500/20 transition-colors"
+        >
+          How It Works →
+        </button>
       </div>
 
       {/* System Components */}
