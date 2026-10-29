@@ -77,6 +77,10 @@ export interface KappaSnapshot {
     decayLambda: number;
     windowSize: number;
   };
+  articleMetadata?: {
+    titles: string[];
+    topics: string[];
+  };
 }
 
 export interface HomeostasisAssessment {

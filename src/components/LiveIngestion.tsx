@@ -196,6 +196,10 @@ export default function LiveIngestion() {
 
       // Push to global context for Reports
       const sources = [...new Set(items.map(i => i.sourceId))];
+      const articleMetadata = {
+        titles: items.slice(0, 20).map(i => i.title), // Store up to 20 titles
+        topics: items.flatMap(i => i.categories).slice(0, 50), // Store up to 50 topics
+      };
       addKappaSnapshot({
         id: `snap-${now}-${Math.random().toString(36).slice(2, 8)}`,
         timestamp: now,
@@ -206,6 +210,7 @@ export default function LiveIngestion() {
         itemCount: items.length,
         sources,
         configuration: { decayLambda, windowSize },
+        articleMetadata,
       });
 
       // Generate homeostasis assessment
