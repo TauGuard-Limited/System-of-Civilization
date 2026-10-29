@@ -12,6 +12,7 @@ import {
 import {
   computeCoherence, computeEntropy, extractTopics, decayWeight
 } from '../services/semanticSimilarity';
+import { useAppState } from '../App';
 
 interface FeedState {
   config: RSSFeedConfig;
@@ -39,16 +40,59 @@ const colorClasses: Record<string, string> = {
 };
 
 export default function LiveIngestion() {
-  const [feeds, setFeeds] = useState<FeedState[]>(
-    REAL_FEEDS.map(config => ({
+  const { activeCountry, apiConfig, addKappaSnapshot, addAssessment } = useAppState();
+
+  // Build feed list: built-in feeds + custom feeds, filtered by country
+  const buildFeedList = useCallback((): RSSFeedConfig[] => {
+    // Built-in feeds (all countries since they're global sources)
+    const builtIn = REAL_FEEDS;
+    
+    // Custom feeds from settings, filtered by active country
+    const custom: RSSFeedConfig[] = apiConfig.customFeeds
+      .filter(f => f.enabled && (f.country === activeCountry || activeCountry === 'Global'))
+      .map(f => ({
+        id: f.id,
+        name: f.name,
+        url: f.url,
+        category: f.category,
+        description: `Custom feed — ${f.country}`,
+        color: 'amber' as const,
+      }));
+    
+    return [...builtIn, ...custom];
+  }, [apiConfig.customFeeds, activeCountry]);
+
+  const [feeds, setFeeds] = useState<FeedState[]>(() =>
+    buildFeedList().map(config => ({
       config,
-      enabled: ['bbc-world', 'hackernews', 'wikipedia-rc'].includes(config.id), // Default selection
+      enabled: ['bbc-world', 'hackernews', 'wikipedia-rc'].includes(config.id),
       items: [],
       loading: false,
       error: null,
       lastFetched: null,
     }))
   );
+
+  // Rebuild feed list when custom feeds or country changes
+  useEffect(() => {
+    const newList = buildFeedList();
+    setFeeds(prev => {
+      // Preserve existing state for feeds that still exist
+      const existing = new Map(prev.map(f => [f.config.id, f]));
+      return newList.map(config => {
+        const ex = existing.get(config.id);
+        if (ex) return { ...ex, config };
+        return {
+          config,
+          enabled: ['bbc-world', 'hackernews', 'wikipedia-rc'].includes(config.id),
+          items: [],
+          loading: false,
+          error: null,
+          lastFetched: null,
+        };
+      });
+    });
+  }, [buildFeedList]);
   const [kappaHistory, setKappaHistory] = useState<KappaPoint[]>([]);
   const [isAutoRefresh, setIsAutoRefresh] = useState(false);
   const [autoRefreshInterval, setAutoRefreshInterval] = useState(60); // seconds
@@ -150,9 +194,43 @@ export default function LiveIngestion() {
         timestamp: now,
       };
 
+      // Push to global context for Reports
+      const sources = [...new Set(items.map(i => i.sourceId))];
+      addKappaSnapshot({
+        id: `snap-${now}-${Math.random().toString(36).slice(2, 8)}`,
+        timestamp: now,
+        country: activeCountry,
+        kappa,
+        rawCoherence,
+        entropy,
+        itemCount: items.length,
+        sources,
+        configuration: { decayLambda, windowSize },
+      });
+
+      // Generate homeostasis assessment
+      const kappaMin = 0.05;
+      const kappaMax = 0.35;
+      let condition = 'homeostasis';
+      if (kappa < kappaMin) condition = 'hypo';
+      else if (kappa > kappaMax) condition = 'hyper';
+      
+      addAssessment({
+        id: `assess-${now}-${Math.random().toString(36).slice(2, 8)}`,
+        timestamp: now,
+        country: activeCountry,
+        condition,
+        coherence: kappa,
+        diversity: entropy,
+        instability: Math.abs(rawCoherence - kappa),
+        confidence: 0.6,
+        persistence: 1,
+        evidence: `${items.length} articles from ${sources.length} sources`,
+      });
+
       return [...prev, newPoint].slice(-100);
     });
-  }, [feeds, decayLambda, windowSize]);
+  }, [feeds, decayLambda, windowSize, activeCountry, addKappaSnapshot, addAssessment]);
 
   // Auto-refresh
   useEffect(() => {
@@ -193,13 +271,24 @@ export default function LiveIngestion() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-          <Zap size={20} className="text-amber-400" />
-          Live RSS Ingestion Pipeline
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+            <Zap size={20} className="text-amber-400" />
+            Live RSS Ingestion Pipeline
+          </h2>
+          <div className="flex items-center gap-2">
+            <Globe size={14} className="text-cyan-400" />
+            <span className="text-xs text-cyan-400 font-medium">{activeCountry}</span>
+          </div>
+        </div>
         <p className="text-xs text-gray-400 mt-1 max-w-3xl">
           Real-time ingestion from public RSS feeds through the Symbolic Homeostasis Engine. 
           Data flows through a controlled pipeline: fetch → deduplicate → validate → embed → κ(t) → store.
+          {activeCountry !== 'Global' && (
+            <span className="text-amber-400 ml-1">
+              Scoped to {activeCountry} — custom feeds from Settings included.
+            </span>
+          )}
         </p>
       </div>
 

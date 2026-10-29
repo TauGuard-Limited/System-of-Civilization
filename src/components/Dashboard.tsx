@@ -169,39 +169,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
         </div>
       </div>
 
-      {/* Key Equations */}
-      <div className="rounded-xl bg-gray-900 border border-gray-800 p-6">
-        <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-          <Activity size={16} className="text-emerald-400" />
-          Core Mathematical Model
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="rounded-lg bg-gray-800/50 p-4 border border-gray-700/50">
-            <p className="text-xs text-gray-400 mb-2">Semantic Coherence</p>
-            <code className="text-xs text-emerald-300 font-mono block">
-              C_t = Σ w_ij(t)·s_ij(t) / Σ w_ij(t)
-            </code>
-          </div>
-          <div className="rounded-lg bg-gray-800/50 p-4 border border-gray-700/50">
-            <p className="text-xs text-gray-400 mb-2">Symbolic Dissipation</p>
-            <code className="text-xs text-emerald-300 font-mono block">
-              d(Δt) = e^(-λ·Δt)
-            </code>
-          </div>
-          <div className="rounded-lg bg-gray-800/50 p-4 border border-gray-700/50">
-            <p className="text-xs text-gray-400 mb-2">Temporal Coherence Signal</p>
-            <code className="text-xs text-emerald-300 font-mono block">
-              κ_t = Σ h_j·C_(t-j)·d_j / Σ h_j·d_j
-            </code>
-          </div>
-          <div className="rounded-lg bg-gray-800/50 p-4 border border-gray-700/50">
-            <p className="text-xs text-gray-400 mb-2">Narrative Entropy</p>
-            <code className="text-xs text-emerald-300 font-mono block">
-              H_t = -Σ p_k(t)·ln(p_k(t))
-            </code>
-          </div>
-        </div>
-      </div>
+
 
       {/* Explicit Exclusions */}
       <div className="rounded-xl bg-gray-900 border border-red-900/30 p-6">
