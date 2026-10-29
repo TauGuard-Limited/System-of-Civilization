@@ -14,8 +14,22 @@ export default function Settings() {
   });
 
   const countries = [
-    'Global', 'United States', 'United Kingdom', 'Germany', 'France', 'Poland',
-    'Czech Republic', 'Ukraine', 'Japan', 'China', 'India', 'Brazil', 'Australia', 'Canada'
+    'Global',
+    // EU Member States
+    'Austria', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech Republic',
+    'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary',
+    'Ireland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Malta', 'Netherlands',
+    'Poland', 'Portugal', 'Romania', 'Slovakia', 'Slovenia', 'Spain', 'Sweden',
+    // Other European
+    'United Kingdom', 'Switzerland', 'Norway', 'Iceland', 'Ukraine', 'Serbia',
+    'Albania', 'North Macedonia', 'Montenegro', 'Bosnia and Herzegovina', 'Moldova',
+    'Belarus', 'Russia', 'Turkey',
+    // Americas
+    'United States', 'Canada', 'Mexico', 'Brazil', 'Argentina',
+    // Asia-Pacific
+    'Japan', 'China', 'India', 'South Korea', 'Indonesia', 'Australia',
+    // Middle East & Africa
+    'Saudi Arabia', 'Israel', 'Egypt', 'Nigeria', 'Kenya', 'South Africa',
   ];
 
   const addCustomFeed = () => {

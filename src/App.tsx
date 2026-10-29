@@ -306,19 +306,74 @@ export default function App() {
                 className="text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 text-gray-300 focus:outline-none focus:border-emerald-500"
               >
                 <option>Global</option>
-                <option>United States</option>
-                <option>United Kingdom</option>
-                <option>Germany</option>
-                <option>France</option>
-                <option>Poland</option>
-                <option>Czech Republic</option>
-                <option>Ukraine</option>
-                <option>Japan</option>
-                <option>China</option>
-                <option>India</option>
-                <option>Brazil</option>
-                <option>Australia</option>
-                <option>Canada</option>
+                <optgroup label="EU Member States">
+                  <option>Austria</option>
+                  <option>Belgium</option>
+                  <option>Bulgaria</option>
+                  <option>Croatia</option>
+                  <option>Cyprus</option>
+                  <option>Czech Republic</option>
+                  <option>Denmark</option>
+                  <option>Estonia</option>
+                  <option>Finland</option>
+                  <option>France</option>
+                  <option>Germany</option>
+                  <option>Greece</option>
+                  <option>Hungary</option>
+                  <option>Ireland</option>
+                  <option>Italy</option>
+                  <option>Latvia</option>
+                  <option>Lithuania</option>
+                  <option>Luxembourg</option>
+                  <option>Malta</option>
+                  <option>Netherlands</option>
+                  <option>Poland</option>
+                  <option>Portugal</option>
+                  <option>Romania</option>
+                  <option>Slovakia</option>
+                  <option>Slovenia</option>
+                  <option>Spain</option>
+                  <option>Sweden</option>
+                </optgroup>
+                <optgroup label="Other European Countries">
+                  <option>United Kingdom</option>
+                  <option>Switzerland</option>
+                  <option>Norway</option>
+                  <option>Iceland</option>
+                  <option>Ukraine</option>
+                  <option>Serbia</option>
+                  <option>Albania</option>
+                  <option>North Macedonia</option>
+                  <option>Montenegro</option>
+                  <option>Bosnia and Herzegovina</option>
+                  <option>Moldova</option>
+                  <option>Belarus</option>
+                  <option>Russia</option>
+                  <option>Turkey</option>
+                </optgroup>
+                <optgroup label="Americas">
+                  <option>United States</option>
+                  <option>Canada</option>
+                  <option>Mexico</option>
+                  <option>Brazil</option>
+                  <option>Argentina</option>
+                </optgroup>
+                <optgroup label="Asia-Pacific">
+                  <option>Japan</option>
+                  <option>China</option>
+                  <option>India</option>
+                  <option>South Korea</option>
+                  <option>Indonesia</option>
+                  <option>Australia</option>
+                </optgroup>
+                <optgroup label="Middle East & Africa">
+                  <option>Saudi Arabia</option>
+                  <option>Israel</option>
+                  <option>Egypt</option>
+                  <option>Nigeria</option>
+                  <option>Kenya</option>
+                  <option>South Africa</option>
+                </optgroup>
               </select>
               <span className="px-2.5 py-1 text-xs rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                 v1.0
