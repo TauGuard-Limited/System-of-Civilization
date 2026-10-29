@@ -1,6 +1,6 @@
-import { Activity, Shield, GitBranch, Waves, TrendingUp, AlertTriangle, CheckCircle, Info, X, Zap, Rss } from 'lucide-react';
+import { Activity, Shield, GitBranch, Waves, TrendingUp, AlertTriangle, CheckCircle, Info, X, Zap, Rss, Globe } from 'lucide-react';
 
-type View = 'dashboard' | 'how' | 'live' | 'coherence' | 'narrative' | 'homeostasis' | 'sir' | 'architecture' | 'data';
+type View = 'dashboard' | 'map' | 'how' | 'live' | 'coherence' | 'narrative' | 'homeostasis' | 'sir' | 'architecture' | 'data';
 
 interface DashboardProps {
   onNavigate: (view: View) => void;
@@ -109,6 +109,25 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
           className="shrink-0 px-4 py-2 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-medium hover:bg-amber-500/20 transition-colors"
         >
           How It Works →
+        </button>
+      </div>
+
+      {/* World Map CTA */}
+      <div className="rounded-xl bg-gradient-to-r from-cyan-500/5 to-emerald-500/5 border border-cyan-500/20 p-5 flex items-center justify-between">
+        <div>
+          <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+            <Globe size={16} className="text-cyan-400" />
+            Global Coherence Map
+          </h3>
+          <p className="text-xs text-gray-400 mt-1">
+            Interactive world map showing real-time κ(t) scores per country. Click any country to explore.
+          </p>
+        </div>
+        <button
+          onClick={() => onNavigate('map')}
+          className="shrink-0 px-4 py-2 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-xs font-medium hover:bg-cyan-500/20 transition-colors"
+        >
+          Open Map →
         </button>
       </div>
 

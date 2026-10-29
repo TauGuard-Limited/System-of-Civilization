@@ -10,6 +10,7 @@ import HowItWorks from './components/HowItWorks';
 import LiveIngestion from './components/LiveIngestion';
 import Reports from './components/Reports';
 import Settings from './components/Settings';
+import WorldMap from './components/WorldMap';
 import { 
   LayoutDashboard, 
   Activity, 
@@ -23,10 +24,11 @@ import {
   Menu,
   X,
   FileText,
-  Settings as SettingsIcon
+  Settings as SettingsIcon,
+  Globe
 } from 'lucide-react';
 
-export type View = 'dashboard' | 'how' | 'coherence' | 'narrative' | 'homeostasis' | 'sir' | 'live' | 'reports' | 'settings' | 'architecture' | 'data';
+export type View = 'dashboard' | 'map' | 'how' | 'coherence' | 'narrative' | 'homeostasis' | 'sir' | 'live' | 'reports' | 'settings' | 'architecture' | 'data';
 
 // ---------- Global App Context (for cross-view state sharing) ----------
 interface AppState {
@@ -118,6 +120,7 @@ function saveToStorage(key: string, value: unknown) {
 
 const navItems: { id: View; label: string; icon: React.ReactNode; group?: string }[] = [
   { id: 'dashboard', label: 'Overview', icon: <LayoutDashboard size={18} />, group: 'main' },
+  { id: 'map', label: 'World Map', icon: <Globe size={18} />, group: 'main' },
   { id: 'how', label: 'How It Works', icon: <Zap size={18} />, group: 'main' },
   { id: 'live', label: 'Live Ingestion', icon: <Rss size={18} />, group: 'main' },
   { id: 'coherence', label: 'Coherence Engine', icon: <Activity size={18} />, group: 'engines' },
@@ -323,6 +326,9 @@ export default function App() {
           <div className="p-4 lg:p-6">
             <div style={{ display: view === 'dashboard' ? 'block' : 'none' }}>
               <Dashboard onNavigate={handleNavigate} />
+            </div>
+            <div style={{ display: view === 'map' ? 'block' : 'none' }}>
+              <WorldMap />
             </div>
             <div style={{ display: view === 'how' ? 'block' : 'none' }}>
               <HowItWorks />
