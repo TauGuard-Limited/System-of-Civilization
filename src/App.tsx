@@ -11,6 +11,7 @@ import LiveIngestion from './components/LiveIngestion';
 import Reports from './components/Reports';
 import Settings from './components/Settings';
 import WorldMap from './components/WorldMap';
+import SYGONAnalyzer from './components/SYGONAnalyzer';
 import { 
   LayoutDashboard, 
   Activity, 
@@ -28,7 +29,7 @@ import {
   Globe
 } from 'lucide-react';
 
-export type View = 'dashboard' | 'map' | 'how' | 'coherence' | 'narrative' | 'homeostasis' | 'sir' | 'live' | 'reports' | 'settings' | 'architecture' | 'data';
+export type View = 'dashboard' | 'map' | 'how' | 'coherence' | 'narrative' | 'homeostasis' | 'sir' | 'sygon' | 'live' | 'reports' | 'settings' | 'architecture' | 'data';
 
 // ---------- Global App Context (for cross-view state sharing) ----------
 interface AppState {
@@ -131,6 +132,7 @@ const navItems: { id: View; label: string; icon: React.ReactNode; group?: string
   { id: 'narrative', label: 'Narrative Dynamics', icon: <Waves size={18} />, group: 'engines' },
   { id: 'homeostasis', label: 'Homeostasis', icon: <Shield size={18} />, group: 'engines' },
   { id: 'sir', label: 'SIR Simulator', icon: <GitBranch size={18} />, group: 'engines' },
+  { id: 'sygon', label: 'SYGON Geometry', icon: <Network size={18} />, group: 'engines' },
   { id: 'reports', label: 'Reports', icon: <FileText size={18} />, group: 'ops' },
   { id: 'settings', label: 'Settings & API', icon: <SettingsIcon size={18} />, group: 'ops' },
   { id: 'architecture', label: 'Architecture', icon: <Network size={18} />, group: 'docs' },
@@ -406,6 +408,9 @@ export default function App() {
             </div>
             <div style={{ display: view === 'sir' ? 'block' : 'none' }}>
               <SIRSimulator />
+            </div>
+            <div style={{ display: view === 'sygon' ? 'block' : 'none' }}>
+              <SYGONAnalyzer />
             </div>
             <div style={{ display: view === 'reports' ? 'block' : 'none' }}>
               <Reports />
