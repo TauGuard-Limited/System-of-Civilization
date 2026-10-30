@@ -12,7 +12,7 @@ import {
 import {
   computeCoherence, computeEntropy, extractTopics, decayWeight
 } from '../services/semanticSimilarity';
-import { useAppState } from '../App';
+import { useAppState } from '../context/AppContext';
 
 interface FeedState {
   config: RSSFeedConfig;

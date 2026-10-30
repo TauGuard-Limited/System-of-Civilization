@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { GitBranch, AlertCircle, Play, RotateCcw } from 'lucide-react';
-import { useAppState } from '../App';
+import { useAppState } from '../context/AppContext';
 
 export default function SIRSimulator() {
   const { kappaHistory, activeCountry } = useAppState();

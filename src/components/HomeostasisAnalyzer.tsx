@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Shield, AlertCircle } from 'lucide-react';
-import { useAppState } from '../App';
+import { useAppState } from '../context/AppContext';
 
 export default function HomeostasisAnalyzer() {
   const { kappaHistory, activeCountry } = useAppState();

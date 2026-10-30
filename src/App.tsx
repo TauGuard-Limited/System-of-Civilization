@@ -1,4 +1,5 @@
-import { useState, createContext, useContext } from 'react';
+import { useState } from 'react';
+import { AppContext, type AppState, type CustomFeed, type KappaSnapshot, type HomeostasisAssessment } from './context/AppContext';
 import Dashboard from './components/Dashboard';
 import CoherenceEngine from './components/CoherenceEngine';
 import SIRSimulator from './components/SIRSimulator';
@@ -30,80 +31,6 @@ import {
 } from 'lucide-react';
 
 export type View = 'dashboard' | 'map' | 'how' | 'coherence' | 'narrative' | 'homeostasis' | 'sir' | 'sygon' | 'live' | 'reports' | 'settings' | 'architecture' | 'data';
-
-// ---------- Global App Context (for cross-view state sharing) ----------
-interface AppState {
-  // Country context — shared across all engines
-  activeCountry: string;
-  setActiveCountry: (c: string) => void;
-  
-  // API configuration
-  apiConfig: {
-    customFeeds: CustomFeed[];
-    embeddingEndpoint: string;
-    storageEndpoint: string;
-    authKey: string;
-  };
-  setApiConfig: (cfg: AppState['apiConfig']) => void;
-  
-  // κ(t) history — collected from LiveIngestion, consumed by Reports
-  kappaHistory: KappaSnapshot[];
-  addKappaSnapshot: (snap: KappaSnapshot) => void;
-  clearKappaHistory: () => void;
-  
-  // Homeostasis assessments
-  assessments: HomeostasisAssessment[];
-  addAssessment: (a: HomeostasisAssessment) => void;
-}
-
-export interface CustomFeed {
-  id: string;
-  name: string;
-  url: string;
-  country: string;
-  category: 'news' | 'knowledge' | 'governance' | 'discourse';
-  enabled: boolean;
-}
-
-export interface KappaSnapshot {
-  id: string;
-  timestamp: number;
-  country: string;
-  kappa: number;
-  rawCoherence: number;
-  entropy: number;
-  itemCount: number;
-  sources: string[];
-  configuration: {
-    decayLambda: number;
-    windowSize: number;
-  };
-  articleMetadata?: {
-    titles: string[];
-    topics: string[];
-  };
-}
-
-export interface HomeostasisAssessment {
-  id: string;
-  timestamp: number;
-  country: string;
-  condition: string;
-  coherence: number;
-  diversity: number;
-  instability: number;
-  confidence: number;
-  persistence: number;
-  evidence: string;
-}
-
-const AppContext = createContext<AppState | null>(null);
-
-export function useAppState() {
-  const ctx = useContext(AppContext);
-  if (!ctx) throw new Error('useAppState must be used within AppProvider');
-  return ctx;
-}
 
 // Load from localStorage
 function loadFromStorage<T>(key: string, fallback: T): T {

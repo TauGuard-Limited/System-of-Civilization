@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Settings as SettingsIcon, Globe, Key, Link2, Plus, Trash2, Save, AlertTriangle, CheckCircle, ExternalLink } from 'lucide-react';
-import { useAppState, type CustomFeed } from '../App';
+import { useAppState, type CustomFeed } from '../context/AppContext';
 
 export default function Settings() {
   const { apiConfig, setApiConfig, activeCountry, setActiveCountry } = useAppState();

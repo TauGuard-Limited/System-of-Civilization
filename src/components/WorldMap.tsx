@@ -13,7 +13,7 @@ import {
   Minus, Info, AlertTriangle, CheckCircle, XCircle, MapPin
 } from 'lucide-react';
 import { GEO_URL, getCountryByCode, CODE_TO_APP_COUNTRY, APP_COUNTRY_TO_CODE } from '../data/countries';
-import { useAppState } from '../App';
+import { useAppState } from '../context/AppContext';
 
 const GEO_URL_REAL = GEO_URL;
 

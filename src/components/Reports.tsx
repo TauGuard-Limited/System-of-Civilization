@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FileText, Download, Calendar, Filter, Trash2, AlertCircle } from 'lucide-react';
-import { useAppState } from '../App';
+import { useAppState } from '../context/AppContext';
 
 export default function Reports() {
   const { kappaHistory, assessments, clearKappaHistory, activeCountry } = useAppState();

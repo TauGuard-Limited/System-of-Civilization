@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useAppState } from '../App';
+import { useAppState } from '../context/AppContext';
 import { analyzeSYGON, computeSYGONMetrics, loadSGUState, loadPrimeRegistry, clearSYGONState } from '../services/sygonEngine';
 import { computePairwiseSimilarity } from '../services/semanticSimilarity';
 import { Activity, Network, Trash2, Info } from 'lucide-react';

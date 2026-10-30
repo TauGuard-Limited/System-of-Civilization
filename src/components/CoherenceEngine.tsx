@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Area, AreaChart } from 'recharts';
 import { Activity, Info, AlertCircle } from 'lucide-react';
-import { useAppState } from '../App';
+import { useAppState } from '../context/AppContext';
 
 export default function CoherenceEngine() {
   const { kappaHistory, activeCountry } = useAppState();
