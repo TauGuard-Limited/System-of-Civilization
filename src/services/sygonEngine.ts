@@ -62,23 +62,41 @@ export interface PrimeTokenRegistry {
 
 // Initialize or load registry from localStorage
 export function loadPrimeRegistry(): PrimeTokenRegistry {
-  const stored = localStorage.getItem('sygon_prime_registry');
-  if (stored) {
-    const data = JSON.parse(stored);
-    const tokens = new Map<string, PrimeToken>();
-    data.tokens.forEach((t: any) => tokens.set(t.token, t));
-    return { tokens, nextPrimeIndex: data.nextPrimeIndex };
+  try {
+    const stored = localStorage.getItem('sygon_prime_registry');
+    if (stored) {
+      const data = JSON.parse(stored);
+      const tokens = new Map<string, PrimeToken>();
+      if (data.tokens && Array.isArray(data.tokens)) {
+        data.tokens.forEach((t: any) => {
+          if (t && t.token) {
+            tokens.set(t.token, t);
+          }
+        });
+      }
+      return { tokens, nextPrimeIndex: data.nextPrimeIndex || 0 };
+    }
+  } catch (error) {
+    console.error('Error loading prime registry:', error);
   }
   return { tokens: new Map(), nextPrimeIndex: 0 };
 }
 
 // Save registry to localStorage
 export function savePrimeRegistry(registry: PrimeTokenRegistry): void {
-  const data = {
-    tokens: Array.from(registry.tokens.values()),
-    nextPrimeIndex: registry.nextPrimeIndex,
-  };
-  localStorage.setItem('sygon_prime_registry', JSON.stringify(data));
+  try {
+    if (!registry || !registry.tokens) {
+      console.warn('Invalid registry provided to savePrimeRegistry');
+      return;
+    }
+    const data = {
+      tokens: Array.from(registry.tokens.values()),
+      nextPrimeIndex: registry.nextPrimeIndex || 0,
+    };
+    localStorage.setItem('sygon_prime_registry', JSON.stringify(data));
+  } catch (error) {
+    console.error('Error saving prime registry:', error);
+  }
 }
 
 // Assign primes to new tokens
@@ -194,28 +212,52 @@ export interface DriftRecord {
 
 // Load SGU state from localStorage
 export function loadSGUState(): SGUState {
-  const stored = localStorage.getItem('sygon_sgu_state');
-  if (stored) {
-    const data = JSON.parse(stored);
-    const sgus = new Map<string, SGU>();
-    data.sgus.forEach((s: any) => sgus.set(s.id, s));
-    const driftHistory = new Map<string, DriftRecord[]>();
-    data.driftHistory.forEach((d: any) => driftHistory.set(d.id, d.records));
-    return { sgus, driftHistory };
+  try {
+    const stored = localStorage.getItem('sygon_sgu_state');
+    if (stored) {
+      const data = JSON.parse(stored);
+      const sgus = new Map<string, SGU>();
+      if (data.sgus && Array.isArray(data.sgus)) {
+        data.sgus.forEach((s: any) => {
+          if (s && s.id) {
+            sgus.set(s.id, s);
+          }
+        });
+      }
+      const driftHistory = new Map<string, DriftRecord[]>();
+      if (data.driftHistory && Array.isArray(data.driftHistory)) {
+        data.driftHistory.forEach((d: any) => {
+          if (d && d.id && Array.isArray(d.records)) {
+            driftHistory.set(d.id, d.records);
+          }
+        });
+      }
+      return { sgus, driftHistory };
+    }
+  } catch (error) {
+    console.error('Error loading SGU state:', error);
   }
   return { sgus: new Map(), driftHistory: new Map() };
 }
 
 // Save SGU state to localStorage
 export function saveSGUState(state: SGUState): void {
-  const data = {
-    sgus: Array.from(state.sgus.values()),
-    driftHistory: Array.from(state.driftHistory.entries()).map(([id, records]) => ({
-      id,
-      records,
-    })),
-  };
-  localStorage.setItem('sygon_sgu_state', JSON.stringify(data));
+  try {
+    if (!state || !state.sgus || !state.driftHistory) {
+      console.warn('Invalid state provided to saveSGUState');
+      return;
+    }
+    const data = {
+      sgus: Array.from(state.sgus.values()),
+      driftHistory: Array.from(state.driftHistory.entries()).map(([id, records]) => ({
+        id,
+        records: records || [],
+      })),
+    };
+    localStorage.setItem('sygon_sgu_state', JSON.stringify(data));
+  } catch (error) {
+    console.error('Error saving SGU state:', error);
+  }
 }
 
 // Compute SGU coordinates from text and lexical lattice

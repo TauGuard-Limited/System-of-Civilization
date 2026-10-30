@@ -1,8 +1,8 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useAppState } from '../App';
 import { analyzeSYGON, computeSYGONMetrics, loadSGUState, loadPrimeRegistry, clearSYGONState } from '../services/sygonEngine';
 import { computePairwiseSimilarity } from '../services/semanticSimilarity';
-import { Activity, Network, TrendingUp, Trash2, Info } from 'lucide-react';
+import { Activity, Network, Trash2, Info } from 'lucide-react';
 
 interface SGUVisualizationProps {
   sgus: any[];
@@ -126,18 +126,22 @@ export default function SYGONAnalyzer() {
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
-  // Extract articles from kappaHistory metadata
+  // Extract articles from kappaHistory metadata with null safety
   const allArticles = useMemo(() => {
+    if (!kappaHistory || !Array.isArray(kappaHistory)) {
+      return [];
+    }
+    
     const articles: Array<{id: string; title: string; category: string; source: string}> = [];
     kappaHistory.forEach(snap => {
-      if (snap.articleMetadata?.titles) {
+      if (snap && snap.articleMetadata?.titles && Array.isArray(snap.articleMetadata.titles)) {
         snap.articleMetadata.titles.forEach((title, idx) => {
-          const topic = snap.articleMetadata?.topics[idx] || 'unknown';
+          const topic = snap.articleMetadata?.topics?.[idx] || 'unknown';
           articles.push({
             id: `${snap.id}-${idx}`,
             title,
             category: topic,
-            source: snap.sources[0] || 'unknown',
+            source: snap.sources?.[0] || 'unknown',
           });
         });
       }
@@ -145,14 +149,20 @@ export default function SYGONAnalyzer() {
     return articles;
   }, [kappaHistory]);
 
-  // Get unique sources
+  // Get unique sources with null safety
   const sources = useMemo(() => {
+    if (!allArticles || !Array.isArray(allArticles)) {
+      return ['all'];
+    }
     const srcs = new Set(allArticles.map(a => a.source));
     return ['all', ...Array.from(srcs)];
   }, [allArticles]);
 
-  // Filter articles by source
+  // Filter articles by source with null safety
   const filteredArticles = useMemo(() => {
+    if (!allArticles || !Array.isArray(allArticles)) {
+      return [];
+    }
     if (selectedSource === 'all') return allArticles;
     return allArticles.filter(a => a.source === selectedSource);
   }, [allArticles, selectedSource]);
@@ -197,15 +207,25 @@ export default function SYGONAnalyzer() {
     }
   };
 
-  // Load existing state info
+  // Load existing state info with error handling
   const stateInfo = useMemo(() => {
-    const registry = loadPrimeRegistry();
-    const sguState = loadSGUState();
-    return {
-      primeTokens: registry.tokens.size,
-      sgus: sguState.sgus.size,
-      driftRecords: Array.from(sguState.driftHistory.values()).reduce((sum, records) => sum + records.length, 0),
-    };
+    try {
+      const registry = loadPrimeRegistry();
+      const sguState = loadSGUState();
+      return {
+        primeTokens: registry?.tokens?.size || 0,
+        sgus: sguState?.sgus?.size || 0,
+        driftRecords: sguState?.driftHistory ? 
+          Array.from(sguState.driftHistory.values()).reduce((sum, records) => sum + (records?.length || 0), 0) : 0,
+      };
+    } catch (error) {
+      console.error('Error loading SYGON state:', error);
+      return {
+        primeTokens: 0,
+        sgus: 0,
+        driftRecords: 0,
+      };
+    }
   }, [analysisResult]);
 
   return (
